@@ -17,8 +17,7 @@ Berikut adalah detail filesystem rancangan jasir:
    4. Setiap pembuatan direktori terenkripsi baru (mkdir ataupun rename) akan tercatat ke sebuah database/log berupa file.
    5. Semua file yang berada dalam direktori ter enkripsi menggunakan caesar cipher dengan key.
 
-
-9(ku@AW1[Lmvgax6q\`5Y2Ry?+sF!^HKQiBXCUSe&0M.b%rI'7d)o4~VfZ*{#:}ETt$3J-zpc]lnh8,GwP_ND|jO
+![image](https://user-images.githubusercontent.com/60419316/80187995-bddfb000-863a-11ea-935b-7a81398796c0.png)
 
 Misal kan ada file bernama “kelincilucu.jpg” dalam directory FOTO_PENTING, dan key yang dipakai adalah 10
 “**encv1_rahasia/FOTO_PENTING/kelincilucu.jpg**” => “**encv1_rahasia/ULlL@u]AlZA(/g7D.|\_.Da_a.jpg**
@@ -54,7 +53,7 @@ Implementasi dilarang menggunakan symbolic links dan thread.
    4. Sisanya, akan dicatat dengan level INFO.
    5. Format untuk logging yaitu:
 
-[LEVEL]::[yy][mm][dd]-[HH]:[MM]:[SS]::[CMD]::[DESC ...]
+![image](https://user-images.githubusercontent.com/60419316/80188024-ccc66280-863a-11ea-9576-b5b14517398c.png)
 
 
 LEVEL    : Level logging
@@ -69,9 +68,7 @@ DESC      : Deskripsi tambahan (bisa lebih dari satu, dipisahkan dengan ::)
 
 Contoh format logging nantinya seperti:
 
-INFO::200419-18:29:28::MKDIR::/iz1
-INFO::200419-18:29:33::CREAT::/iz1/yena.jpg
-INFO::200419-18:29:33::RENAME::/iz1/yena.jpg::/iz1/yena.jpeg
+![image](https://user-images.githubusercontent.com/60419316/80188125-ed8eb800-863a-11ea-80ad-fa5c119288ed.png)
 
 
 ### Jawaban
