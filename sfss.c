@@ -19,7 +19,19 @@
 
 // /home/zenados/Documents/FuseDebugging
 // Command to start fuse
-// ./1.exe -d testlink/ -o modules=subdir,subdir=/home/zenados/Documents/4shift/FuseDebugging
+/* 
+./compile.sh soal1.c 1.exe
+./1.exe -d testlink/ -o modules=subdir,subdir=/home/zenados/Documents/4shift/FuseDebugging
+./compile.sh soal1.c 1.exe && ./1.exe -d testlink/ -o modules=subdir,subdir=/home/zenados/Documents/4shift/FuseDebugging
+cd /home/zenados/Documents/4shift/testlink/testDir
+rm -r dirindir2/
+rm -r dirindir3/
+rm -r tmp/
+rm -r sync_tmp/
+cp -r dirindir/ dirindir2/
+cp -r dirindir/ dirindir3/
+mv dirindir2/ tmp/ && mv dirindir3/ sync_tmp/
+ */
 #define FUSE_USE_VERSION 28
 #define HAVE_SETXATTR
 
@@ -195,8 +207,8 @@ void decryptDir1(const char *dirPath) {
 }
 
 
-#define bufSize 32
-// #define bufSize 1024
+// #define bufSize 32
+#define bufSize 1024
 void encrypt2(const char *filepath) {
 	char buff[1025];
 	int bytes_read;
@@ -432,9 +444,29 @@ void loggingCustom(char action[], char type[], const char *arg1, const char *arg
 	fclose(logfs);
 }
 
-char *syncFolderCheck(const char *folderPath) {
+char *syncFolderGetSyncedPath(const char *folderPathIn) {
+	printf("\n\nsyncFolderGetSyncedPath Called\n");
+	char folderPath[500];
+	strcpy(folderPath,folderPathIn);
+	char parentPath[500];
+	strcpy(parentPath,folderPathIn);
+
 	size_t size=500; char *buff = malloc(size*sizeof(char));
-	if (getxattr(folderPath,"user.xsync_",buff,size)!=-1) {
+	int found = 0;
+	while (strcmp(parentPath,"")!=0) {
+		printf("currDir:%s\n",parentPath);
+		if (getxattr(parentPath,"user.xsync_",buff,size)!=-1) {
+			found = 1;
+			break;
+		}
+		*(strrchr(parentPath,'/')) = '\0'; //
+	}
+
+	if (found) {
+		char *subPath = folderPath+strlen(parentPath);
+		char *endP;
+		endP = buff+strlen(buff);
+		strcpy(endP,subPath);
 		return buff;
 	} else {
 		return NULL;
@@ -453,16 +485,18 @@ void syncFolderSet(const char *from, const char *to) {
 	tmpChrP1 = strstr(dirPath,"/sync_")+1;
 	tmpChrP2 = (strchr(tmpChrP1,'_')+1);
 	strcpy(tmpChrP1,tmpChrP2); //replace string from foo/sync_bar to foo/bar
-	loggingCustom("SYNCED","",from,to);
+	loggingCustom("SYNCED","",to,dirPath);
 
 	size_t size=500; char buff[size];
 	strcpy(buff,dirPath);
+	printf("\nSetting x Attribute: %s\n",from);
 	if (setxattr(from,"user.xsync_",buff,(strlen(buff)+1)*sizeof(char),XATTR_CREATE)==-1) {
-		perror("There was an error setting the sync attribute\n");
+		perror("\n\nThere was an error setting the sync attribute\n\n");
 	}
+	printf("\nSetting x Attribute: %s\n",from);
 	strcpy(buff,syncPath);
 	if (setxattr(dirPath,"user.xsync_",buff,(strlen(buff)+1)*sizeof(char),XATTR_CREATE)==-1) {
-		perror("There was an error setting the sync attribute\n");
+		perror("\n\nThere was an error setting the sync attribute\n\n");
 	}
 }
 
@@ -481,15 +515,14 @@ void syncFolderUnset(const char *from) {
 	removexattr(dirPath,"user.xsync_");
 }
 
-int syncFolderDirReq(char path1[], char path2[]) {
-
+int syncFolderDirReq(const char *path1, const char *path2) {
 	DIR *dp;
 	struct dirent *de;
 
 	dp = opendir(path1);
 	if (dp == NULL)
 		return 0;
-
+	printf("checking dir:%s\n",path1);
 	while ((de = readdir(dp)) != NULL) {
 		if (strcmp(de->d_name,".")==0 || strcmp(de->d_name,"..")==0) {
 			continue;
@@ -498,18 +531,24 @@ int syncFolderDirReq(char path1[], char path2[]) {
 		char fullpath1[500],fullpath2[500];
 		sprintf(fullpath1,"%s/%s",path1,de->d_name);
 		sprintf(fullpath2,"%s/%s",path2,de->d_name);
+		printf("\tcurPath checked:\n\t\t%s\n\t\t%s\n",fullpath1,fullpath2);
 		struct stat stmp1,stmp2;
 		stat(fullpath1, &stmp1);
 		stat(fullpath2, &stmp2);
+		printf("\tTime1:\t%ld | %ld\n",stmp1.st_mtime,stmp1.st_mtimensec);
 		unsigned long long int ms1 = stmp1.st_mtime*1e3 + stmp1.st_mtimensec/1e6;
+		printf("\tTime2:\t%ld | %ld\n",stmp2.st_mtime,stmp2.st_mtimensec);
 		unsigned long long int ms2 = stmp2.st_mtime*1e3 + stmp2.st_mtimensec/1e6;
 		// if requirements not met
-		if (access(fullpath2,F_OK)!=-1 && abs((int)ms1-ms2) > 100) {
+		printf("\tTime:\t%lld | %lld\n",ms1,ms2);
+		printf("\nAccess:%d\n",access(fullpath2,F_OK));
+		printf("TimeDiff:%d\n",abs((int)(ms1-ms2)));
+		if (access(fullpath2,F_OK)==-1 || abs((int)(ms1-ms2)) > 100) {
 			return 0;
 		}
 
 		if (S_ISDIR(stmp1.st_mode)) {
-			if (syncFolderDirReq(fullpath1,fullpath2)) return 0;
+			if (!syncFolderDirReq(fullpath1,fullpath2)) return 0;
 		} else {
 			continue;
 		}
@@ -517,6 +556,7 @@ int syncFolderDirReq(char path1[], char path2[]) {
 	}
 
 	closedir(dp);
+	printf("Closing dir returning true");
 	return 1;
 }
 
@@ -538,16 +578,22 @@ int syncFolderReq(const char *from, const char *to) {
 	tmpChrP2 = (strchr(tmpChrP1,'_')+1);
 	strcpy(tmpChrP1,tmpChrP2); //replace string from foo/sync_bar to foo/bar
 	// If parent dir is not similar
+	printf("From:%s\nAccessing:%s\n",from,dirPath);
 	if (access(dirPath,F_OK)==-1) return 0;
 
 	// If path is already synced
 	size_t size=500; char buff[size];
+	printf("getting x attr from:%s\n",from);
 	if (getxattr(from,"user.xsync_",buff,size)!=-1) return 0;
+	printf("getting x attr from:%s\n",dirPath);
 	if (getxattr(dirPath,"user.xsync_",buff,size)!=-1) return 0;
 	
 	// If contents is not similar or last modified time is not > 0.1 s
-	if (syncFolderDirReq(dirPath,syncPath)) return 0;
-	if (syncFolderDirReq(syncPath,dirPath)) return 0;
+	printf("Checking syncFolderDirReq %s | %s\n",dirPath,from);
+	if (!syncFolderDirReq(dirPath,from)) return 0;
+	printf("Done checking\n");
+	printf("Checking syncFolderDirReq %s | %s\n",dirPath,from);
+	if (!syncFolderDirReq(from,dirPath)) return 0;
 
 	return 1;
 }
@@ -579,7 +625,9 @@ static int xmp_rename(const char *from, const char *to) {
 	}
 	if (strstr(tmpChrPFrom,"/sync_")==NULL && strstr(tmpChrPTo,"/sync_")!=NULL) {
 	// If directory is now a sync directory
+		printf("\n\nRenaming directory to a sync directory\n");
 		if (syncFolderReq(from,to)) {
+			printf("Directory eligible to ba a sync directory\n");
 			syncFolderSet(from,to);
 		} else {
 			// Cancel rename
@@ -589,6 +637,22 @@ static int xmp_rename(const char *from, const char *to) {
 	if (strstr(tmpChrPFrom,"/sync_")!=NULL && strstr(tmpChrPTo,"/sync_")==NULL) {
 	// If directory is now not a sync directory
 		syncFolderUnset(from);
+	}
+	char *syncedPathFrom = syncFolderGetSyncedPath(from);
+	char *syncedPathTo = syncFolderGetSyncedPath(to);
+	if (syncedPathFrom!=NULL || syncedPathTo!=NULL) {
+		printf("\n\nrename sync path:%s\n%s\n",syncedPathFrom,syncedPathTo);
+		if (syncedPathFrom==NULL || syncedPathTo==NULL) {
+			// Cannot move between synced and unsyced folder
+			return -1;
+		} else {
+			printf("Synced path is being renamed\n");
+			int res;
+			res = rename(syncedPathFrom,syncedPathTo);
+			if (res == -1)
+				return -errno;
+			printf("Synced path is renamed\n\n\n");
+		}
 	}
 
 
@@ -611,6 +675,15 @@ static int xmp_mkdir(const char *path, mode_t mode) {
 	// If new directory is encrypted
 		loggingCustom("CREATED","Type 2",path,"");
 	}
+	char *syncedPathFrom;
+	printf("\n\nSyncpath check\n");
+	if ((syncedPathFrom=syncFolderGetSyncedPath(path))!=NULL) {
+		printf("Syncpath not null\n");
+		int res;
+		res = mkdir(syncedPathFrom, mode);
+		if (res == -1)
+			return -errno;
+	}
 
 	int res;
 	res = mkdir(path, mode);
@@ -620,9 +693,29 @@ static int xmp_mkdir(const char *path, mode_t mode) {
 	return 0;
 }
 
-static int xmp_write(const char *path, const char *buf, size_t size, off_t offset, struct fuse_file_info *fi)
-{
+static int xmp_write(const char *path, const char *buf, size_t size, off_t offset, struct fuse_file_info *fi) {
 	logging("WRITE",path,"");
+
+	char *syncedPathFrom;
+	if ((syncedPathFrom=syncFolderGetSyncedPath(path))!=NULL) {
+		int fd;
+		int res;
+
+		(void) fi;
+		fd = open(syncedPathFrom, O_WRONLY);
+		if (fd == -1)
+			return -errno;
+
+		res = pwrite(fd, buf, size, offset);
+		if (res == -1)
+			res = -errno;
+
+		close(fd);
+		if (strstr(syncedPathFrom,"/encv2_")!=NULL) {
+			encrypt2(syncedPathFrom);
+		}
+
+	}
 
 	int fd;
 	int res;
@@ -645,6 +738,22 @@ static int xmp_write(const char *path, const char *buf, size_t size, off_t offse
 
 static int xmp_create(const char* path, mode_t mode, struct fuse_file_info* fi) {
 	logging("CREATE",path,"");
+
+	char *syncedPathFrom;
+	if ((syncedPathFrom=syncFolderGetSyncedPath(path))!=NULL) {
+		(void) fi;
+
+		int res;
+		res = creat(syncedPathFrom, mode);
+		if(res == -1)
+			return -errno;
+
+		close(res);
+		
+		if (strstr(syncedPathFrom,"/encv1_")!=NULL) {
+			encrypt1(syncedPathFrom,10);
+		}
+	}
 
 	(void) fi;
 
