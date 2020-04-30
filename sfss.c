@@ -62,87 +62,140 @@ mv dirindir2/ tmp/ && mv dirindir3/ sync_tmp/
 // Switched dot '.' character with space ' ' character since . is an extension specific character
 char charlist[] = "9(ku@AW1[Lmvgax6q`5Y2Ry?+sF!^HKQiBXCUSe&0M b%rI'7d)o4~VfZ*{#:}ETt$3J-zpc]lnh8,GwP_ND|jO9(ku@AW1[Lmvgax6q`5Y2Ry?+sF!^HKQiBXCUSe&0M b%rI'7d)o4~VfZ*{#:}ETt$3J-zpc]lnh8,GwP_ND|jO";
 
-void encrypt1(const char *filepathIn, int offset) {
-	char filepath[500];
+void encrypt1(const char *filepathIn, int offset,	char *outBuff) {
   int startIdx = 0;
 	char *tmpChrP;
 
-	strcpy(filepath,filepathIn);
-	printf("strstr success\n");
-	if ((tmpChrP = strrchr(filepath+1,'/'))!=NULL) {
-		startIdx = tmpChrP-filepath;
-		printf("startIdx:%d\n",startIdx);
+	strcpy(outBuff,filepathIn);
+	if ((tmpChrP = strstr(outBuff,"/encv1_"))!=NULL && (tmpChrP = strrchr(tmpChrP+1,'/'))!=NULL) {
+	// if ((tmpChrP = strrchr(filepathIn,'/'))!=NULL) {
+		startIdx = tmpChrP-outBuff;
 	} else {
 	// Else, this is the /encv1_ itself, there's nothing to encrypt or decrypt
 		return;
 	}
 
 	int fileExtIdx;
-	if ((tmpChrP = strrchr(filepath, '.'))!=NULL) {
-		fileExtIdx = tmpChrP-filepath;
+	if ((tmpChrP = strrchr(outBuff, '.'))!=NULL) {
+		fileExtIdx = tmpChrP-outBuff;
 	} else {
-		fileExtIdx = strlen(filepath);
+		fileExtIdx = strlen(outBuff);
 	}
 
 	int tempIdx;
-	printf("input:%s",filepathIn);
   while(startIdx != fileExtIdx) {
 	// Iterate until file extension
-		if (filepath[startIdx] != '/') {
-			tempIdx = strchr(charlist,filepath[startIdx]) - charlist + offset;
-			filepath[startIdx] = charlist[tempIdx];
+		if (outBuff[startIdx] != '/') {
+			tempIdx = strchr(charlist,outBuff[startIdx]) - charlist + offset;
+			outBuff[startIdx] = charlist[tempIdx];
 		}
 		startIdx++;
   }
-
-	printf("output:%s",filepath);
-	rename(filepathIn,filepath);
+	printf("ENCoutput:%s\n",outBuff);
 }
 
-void decrypt1(const char *filepathIn, int offset) {
-	char filepath[500];
+void encryptRaw1(char *inStr, int offset) {
+  int startIdx = 0;
+
+	int fileExtIdx;
+	char *tmpChrP;
+	if ((tmpChrP = strrchr(inStr, '.'))!=NULL) {
+		fileExtIdx = tmpChrP-inStr;
+	} else {
+		fileExtIdx = strlen(inStr);
+	}
+
+	int tempIdx;
+  while(startIdx != fileExtIdx) {
+	// Iterate until file extension
+		if (inStr[startIdx] != '/') {
+			tempIdx = strchr(charlist,inStr[startIdx]) - charlist + offset;
+			inStr[startIdx] = charlist[tempIdx];
+		}
+		startIdx++;
+  }
+}
+
+void encrypt1Rename(const char *filepathIn, int offset) {
+	char outBuff[500];
+	encrypt1(filepathIn,offset,outBuff);
+	printf("\n\nfrom: %s |to| %s\n\n\n",filepathIn,outBuff);
+	rename(filepathIn,outBuff);
+}
+
+void decrypt1(const char *filepathIn, int offset,	char *outBuff) {
   int startIdx = 0;
 	char *tmpChrP;
 
-	strcpy(filepath,filepathIn);
-	if ((tmpChrP = strrchr(filepath+1,'/'))!=NULL) {
-		startIdx = tmpChrP-filepath;
+	strcpy(outBuff,filepathIn);
+	if ((tmpChrP = strstr(outBuff,"/encv1_"))!=NULL && (tmpChrP = strrchr(tmpChrP+1,'/'))!=NULL) {
+	// if ((tmpChrP = strrchr(filepathIn,'/'))!=NULL) {
+		startIdx = tmpChrP-outBuff;
 	} else {
 	// Else, this is the /encv1_ itself, there's nothing to encrypt or decrypt
 		return;
 	}
 
 	int fileExtIdx;
-	if ((tmpChrP = strrchr(filepath, '.'))!=NULL) {
-		fileExtIdx = tmpChrP-filepath;
+	if ((tmpChrP = strrchr(outBuff, '.'))!=NULL) {
+		fileExtIdx = tmpChrP-outBuff;
 	} else {
-		fileExtIdx = strlen(filepath);
+		fileExtIdx = strlen(outBuff);
 	}
 
 	int tempIdx;
   while(startIdx != fileExtIdx) {
 	// Iterate until file extension
-		if (filepath[startIdx] != '/') {
-			tempIdx = strrchr(charlist,filepath[startIdx]) - charlist - offset;
-			filepath[startIdx] = charlist[tempIdx];
+		if (outBuff[startIdx] != '/') {
+			tempIdx = strrchr(charlist,outBuff[startIdx]) - charlist - offset;
+			outBuff[startIdx] = charlist[tempIdx];
 		}
 		startIdx++;
   }
-	
-	rename(filepathIn,filepath);
+	printf("DECoutput:%s\n",outBuff);
+}
+
+void decryptRaw1(char *inStr, int offset) {
+  int startIdx = 0;
+
+	int fileExtIdx;
+	char *tmpChrP;
+	if ((tmpChrP = strrchr(inStr, '.'))!=NULL) {
+		fileExtIdx = tmpChrP-inStr;
+	} else {
+		fileExtIdx = strlen(inStr);
+	}
+
+	int tempIdx;
+  while(startIdx != fileExtIdx) {
+	// Iterate until file extension
+		if (inStr[startIdx] != '/') {
+			tempIdx = strrchr(charlist,inStr[startIdx]) - charlist - offset;
+			inStr[startIdx] = charlist[tempIdx];
+		}
+		startIdx++;
+  }
+}
+
+void decrypt1Rename(const char *filepathIn, int offset) {
+	char outBuff[500];
+	decrypt1(filepathIn,offset,outBuff);
+	rename(filepathIn,outBuff);
 }
 
 void encryptDir1(const char *dirPath) {
+	printf("encryptDir1 called: %s\n",dirPath);
 	char currDir[500];
 	strcpy(currDir,dirPath);
 
+	printf("currDir: %s",currDir);
 	DIR *dp;
 	struct dirent *de;
-
 	dp = opendir(currDir);
 	if (dp == NULL)
 		return;
 
+	printf("Starting read\n");
 	while ((de = readdir(dp)) != NULL) {
 		if (strcmp(de->d_name,".")==0 || strcmp(de->d_name,"..")==0) {
 			continue;
@@ -157,10 +210,10 @@ void encryptDir1(const char *dirPath) {
 		printf("fullpath:%s\n",fullpath);
 		if (S_ISREG(st.st_mode)) {
 		// If is regular file
-			encrypt1(fullpath,10);
+			encrypt1Rename(fullpath,10);
 		} else if (S_ISDIR(st.st_mode)) {
 			encryptDir1(fullpath);
-			encrypt1(fullpath,10);
+			encrypt1Rename(fullpath,10);
 		} else {
 			continue;
 		}
@@ -193,10 +246,10 @@ void decryptDir1(const char *dirPath) {
 		sprintf(fullpath,"%s/%s",currDir,de->d_name);
 		if (S_ISREG(st.st_mode)) {
 		// If is regular file
-			decrypt1(fullpath,10);
+			decrypt1Rename(fullpath,10);
 		} else if (S_ISDIR(st.st_mode)) {
 			decryptDir1(fullpath);
-			decrypt1(fullpath,10);
+			decrypt1Rename(fullpath,10);
 		} else {
 			continue;
 		}
@@ -445,7 +498,7 @@ void loggingCustom(char action[], char type[], const char *arg1, const char *arg
 }
 
 char *syncFolderGetSyncedPath(const char *folderPathIn) {
-	printf("\n\nsyncFolderGetSyncedPath Called\n");
+	// printf("\n\nsyncFolderGetSyncedPath Called\n");
 	char folderPath[500];
 	strcpy(folderPath,folderPathIn);
 	char parentPath[500];
@@ -454,7 +507,7 @@ char *syncFolderGetSyncedPath(const char *folderPathIn) {
 	size_t size=500; char *buff = malloc(size*sizeof(char));
 	int found = 0;
 	while (strcmp(parentPath,"")!=0) {
-		printf("currDir:%s\n",parentPath);
+		// printf("currDir:%s\n",parentPath);
 		if (getxattr(parentPath,"user.xsync_",buff,size)!=-1) {
 			found = 1;
 			break;
@@ -603,11 +656,6 @@ static int xmp_rename(const char *from, const char *to) {
 	// Find last occurence of 
 	char *tmpChrPFrom = strrchr(from,'/');
 	char *tmpChrPTo = strrchr(to,'/');
-	if (strstr(tmpChrPFrom,"/encv1_")==NULL && strstr(tmpChrPTo,"/encv1_")!=NULL) {
-	// If directory is now encrypted
-		loggingCustom("ENCRYPTED","Type 1",from,to);
-		encryptDir1(from);
-	}
 	if (strstr(tmpChrPFrom,"/encv1_")!=NULL && strstr(tmpChrPTo,"/encv1_")==NULL) {
 	// If directory is now decrypted
 		loggingCustom("DECRYPTED","Type 1",from,to);
@@ -633,25 +681,26 @@ static int xmp_rename(const char *from, const char *to) {
 			// Cancel rename
 			return -1;
 		}
-	}
-	if (strstr(tmpChrPFrom,"/sync_")!=NULL && strstr(tmpChrPTo,"/sync_")==NULL) {
+	} else if (strstr(tmpChrPFrom,"/sync_")!=NULL && strstr(tmpChrPTo,"/sync_")==NULL) {
 	// If directory is now not a sync directory
 		syncFolderUnset(from);
-	}
-	char *syncedPathFrom = syncFolderGetSyncedPath(from);
-	char *syncedPathTo = syncFolderGetSyncedPath(to);
-	if (syncedPathFrom!=NULL || syncedPathTo!=NULL) {
-		printf("\n\nrename sync path:%s\n%s\n",syncedPathFrom,syncedPathTo);
-		if (syncedPathFrom==NULL || syncedPathTo==NULL) {
-			// Cannot move between synced and unsyced folder
-			return -1;
-		} else {
-			printf("Synced path is being renamed\n");
-			int res;
-			res = rename(syncedPathFrom,syncedPathTo);
-			if (res == -1)
-				return -errno;
-			printf("Synced path is renamed\n\n\n");
+	} else {
+		char *syncedPathFrom = syncFolderGetSyncedPath(from);
+		char *syncedPathTo = syncFolderGetSyncedPath(to);
+		if (syncedPathFrom!=NULL || syncedPathTo!=NULL) {
+			printf("\n\nrename sync path:%s\n%s\n",syncedPathFrom,syncedPathTo);
+			if (syncedPathFrom==NULL || syncedPathTo==NULL) {
+				// Cannot move between synced and unsyced folder
+				printf("already renamed\n");
+				return -1;
+			} else {
+				printf("Synced path is being renamed\n");
+				int res;
+				res = rename(syncedPathFrom,syncedPathTo);
+				if (res == -1)
+					return -errno;
+				printf("Synced path is renamed\n\n\n");
+			}
 		}
 	}
 
@@ -660,6 +709,13 @@ static int xmp_rename(const char *from, const char *to) {
 	res = rename(from, to);
 	if (res == -1)
 		return -errno;
+
+	printf("\n\n\n start encrypt dir1\n");
+	if (strstr(tmpChrPFrom,"/encv1_")==NULL && strstr(tmpChrPTo,"/encv1_")!=NULL) {
+	// If directory is now encrypted
+		loggingCustom("ENCRYPTED","Type 1",from,to);
+		encryptDir1(to);
+	}
 
 	return 0;
 }
@@ -751,7 +807,7 @@ static int xmp_create(const char* path, mode_t mode, struct fuse_file_info* fi) 
 		close(res);
 		
 		if (strstr(syncedPathFrom,"/encv1_")!=NULL) {
-			encrypt1(syncedPathFrom,10);
+			encrypt1Rename(syncedPathFrom,10);
 		}
 	}
 
@@ -765,7 +821,7 @@ static int xmp_create(const char* path, mode_t mode, struct fuse_file_info* fi) 
 	close(res);
 	
 	if (strstr(path,"/encv1_")!=NULL) {
-		encrypt1(path,10);
+		encrypt1Rename(path,10);
 	}
 
 	return 0;
@@ -774,8 +830,19 @@ static int xmp_create(const char* path, mode_t mode, struct fuse_file_info* fi) 
 static int xmp_getattr(const char *path, struct stat *stbuf)
 {
 	// logging("GETATTR",path,"");
+
 	int res;
-	res = lstat(path, stbuf);
+
+	// printf("\ninputATTR:%s\n",path);
+	char bufPath[500];
+	strcpy(bufPath,path);
+	char *tmpChrP;
+	if ((tmpChrP = strstr(bufPath,"/encv1_"))!=NULL && (tmpChrP = strchr(tmpChrP+1,'/'))!=NULL){
+		encryptRaw1(tmpChrP, 10);
+	}
+
+	// printf("getATTR:%s\n",bufPath);
+	res = lstat(bufPath, stbuf);
 	if (res == -1)
 		return -errno;
 
@@ -792,15 +859,30 @@ static int xmp_readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_
 	(void) offset;
 	(void) fi;
 
-	dp = opendir(path);
+	char bufPath[500];
+	strcpy(bufPath,path);
+	char *tmpChrP;
+	if ((tmpChrP = strstr(bufPath,"/encv1_"))!=NULL && (tmpChrP = strchr(tmpChrP+1,'/'))!=NULL){
+		encryptRaw1(tmpChrP, 10);
+	}
+	printf("\n\nopenDirPath:%s\n",bufPath);
+	dp = opendir(bufPath);
 	if (dp == NULL)
 		return -errno;
 
 	while ((de = readdir(dp)) != NULL) {
+		if (strcmp(de->d_name,".")==0 || strcmp(de->d_name,"..")==0) {
+			continue;
+		} 
 		struct stat st;
 		memset(&st, 0, sizeof(st));
 		st.st_ino = de->d_ino;
 		st.st_mode = de->d_type << 12;
+
+		if (strstr(path,"/encv1_")!=NULL) {
+			decryptRaw1(de->d_name,10);
+		}
+		printf("fillerName:%s\n\n",de->d_name);
 		if (filler(buf, de->d_name, &st, 0))
 			break;
 	}
@@ -813,8 +895,18 @@ static int xmp_access(const char *path, int mask)
 {
 	// logging("ACCESS",path,"");
 
+	// printf("\ninputAccESS:%s\n",path);
+	char bufPath[500];
+	strcpy(bufPath,path);
+	char *tmpChrP;
+	if ((tmpChrP = strstr(bufPath,"/encv1_"))!=NULL && (tmpChrP = strchr(tmpChrP+1,'/'))!=NULL){
+		encryptRaw1(tmpChrP, 10);
+	}
+
+
+	// printf("AccESS:%s\n",bufPath);
 	int res;
-	res = access(path, mask);
+	res = access(bufPath, mask);
 	if (res == -1)
 		return -errno;
 
