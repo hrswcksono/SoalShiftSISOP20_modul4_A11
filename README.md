@@ -1221,7 +1221,7 @@ int main(int argc, char *argv[])
 ### Creating dir
 ![image](https://user-images.githubusercontent.com/60419316/80702325-161b2400-8b0b-11ea-8293-dbf91fd02a9b.png)
 </br> Hasilnya
-![image](https://user-images.githubusercontent.com/60419316/80702374-292df400-8b0b-11ea-8f18-9128cc507459.png)
+</br> ![image](https://user-images.githubusercontent.com/60419316/80702374-292df400-8b0b-11ea-8f18-9128cc507459.png)
 ![image](https://user-images.githubusercontent.com/60419316/80702409-35b24c80-8b0b-11ea-8648-4b37e11e9066.png)
 ### Coba create dir
 ![image](https://user-images.githubusercontent.com/60419316/80702442-4662c280-8b0b-11ea-9106-21b591d8dd56.png)
