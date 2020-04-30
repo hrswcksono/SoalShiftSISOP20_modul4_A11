@@ -1183,10 +1183,35 @@ int main(int argc, char *argv[])
 
 ```
 
-### Bukti
-#### Saat 
+### ENCV1
+#### Diberikan sebuah directory
+![image](https://user-images.githubusercontent.com/60419316/80701261-511c5800-8b09-11ea-8696-3a282db67343.png)
+#### Rename menjadi encv1_
+![image](https://user-images.githubusercontent.com/60419316/80701307-65605500-8b09-11ea-893a-d45ec1c10023.png)
+Jika dilihat di storage yang utama (yang bukan di mount)
+![image](https://user-images.githubusercontent.com/60419316/80701385-82952380-8b09-11ea-8ef0-c3ab584edfc6.png)
+#### Jika kita rename kembali dari encv1
+![image](https://user-images.githubusercontent.com/60419316/80701450-9a6ca780-8b09-11ea-9716-4a95cea07029.png)
+Jika kita lihat di main storage (yang bukan di mount)
+![image](https://user-images.githubusercontent.com/60419316/80701517-b2442b80-8b09-11ea-9a0f-5258f11cb807.png)
+#### Logging
+![image](https://user-images.githubusercontent.com/60419316/80701557-c25c0b00-8b09-11ea-903b-7edb03b0f9d8.png)
+### ENCV2
+#### Rename 2: diberikan subdir
+![image](https://user-images.githubusercontent.com/60419316/80701594-d56edb00-8b09-11ea-92e6-9a56ef994327.png)
+![image](https://user-images.githubusercontent.com/60419316/80701606-dc95e900-8b09-11ea-870e-fc259999d211.png)
+#### Rename jadi encv2_
+![image](https://user-images.githubusercontent.com/60419316/80701638-e7507e00-8b09-11ea-83a1-a7833e79a950.png)
+![image](https://user-images.githubusercontent.com/60419316/80701655-efa8b900-8b09-11ea-8354-831ba988f9c1.png)
+#### Rename kembali dari encv2_
+![image](https://user-images.githubusercontent.com/60419316/80701673-fa634e00-8b09-11ea-87a4-d24f102b8ce0.png)
+![image](https://user-images.githubusercontent.com/60419316/80701697-0222f280-8b0a-11ea-8996-dcc149fc8120.png)
+Maka file kembali lagi tergabung
+#### Berlaku juga untuk subdir
 
-#### Saat
-
-#### Saat
-
+####
+####
+####
+####
+####
+####
