@@ -1188,11 +1188,11 @@ int main(int argc, char *argv[])
 ![image](https://user-images.githubusercontent.com/60419316/80701261-511c5800-8b09-11ea-8696-3a282db67343.png)
 ### Rename menjadi encv1_
 ![image](https://user-images.githubusercontent.com/60419316/80701307-65605500-8b09-11ea-893a-d45ec1c10023.png)
-Jika dilihat di storage yang utama (yang bukan di mount)
+</br> Jika dilihat di storage yang utama (yang bukan di mount)
 ![image](https://user-images.githubusercontent.com/60419316/80701385-82952380-8b09-11ea-8ef0-c3ab584edfc6.png)
 ### Jika kita rename kembali dari encv1
 ![image](https://user-images.githubusercontent.com/60419316/80701450-9a6ca780-8b09-11ea-9716-4a95cea07029.png)
-Jika kita lihat di main storage (yang bukan di mount)
+</br> Jika kita lihat di main storage (yang bukan di mount)
 ![image](https://user-images.githubusercontent.com/60419316/80701517-b2442b80-8b09-11ea-9a0f-5258f11cb807.png)
 ### Logging
 ![image](https://user-images.githubusercontent.com/60419316/80701557-c25c0b00-8b09-11ea-903b-7edb03b0f9d8.png)
@@ -1206,7 +1206,7 @@ Jika kita lihat di main storage (yang bukan di mount)
 ### Rename kembali dari encv2_
 ![image](https://user-images.githubusercontent.com/60419316/80701673-fa634e00-8b09-11ea-87a4-d24f102b8ce0.png)
 ![image](https://user-images.githubusercontent.com/60419316/80701697-0222f280-8b0a-11ea-8996-dcc149fc8120.png)
-Maka file kembali lagi tergabung
+</br> Maka file kembali lagi tergabung
 ### Berlaku juga untuk subdir
 ![image](https://user-images.githubusercontent.com/60419316/80702136-c89eb700-8b0a-11ea-85c3-ce8fd8ddca58.png)
 ![image](https://user-images.githubusercontent.com/60419316/80702170-d3594c00-8b0a-11ea-81e1-8e9c998ec92b.png)
@@ -1220,7 +1220,7 @@ Maka file kembali lagi tergabung
 ## Sync DIR
 ### Creating dir
 ![image](https://user-images.githubusercontent.com/60419316/80702325-161b2400-8b0b-11ea-8293-dbf91fd02a9b.png)
-Hasilnya
+</br> Hasilnya
 ![image](https://user-images.githubusercontent.com/60419316/80702374-292df400-8b0b-11ea-8f18-9128cc507459.png)
 ![image](https://user-images.githubusercontent.com/60419316/80702409-35b24c80-8b0b-11ea-8648-4b37e11e9066.png)
 ### Coba create dir
