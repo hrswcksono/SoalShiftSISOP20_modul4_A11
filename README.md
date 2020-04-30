@@ -1183,31 +1183,31 @@ int main(int argc, char *argv[])
 
 ```
 
-### ENCV1
-#### Diberikan sebuah directory
+## ENCV1
+### Diberikan sebuah directory
 ![image](https://user-images.githubusercontent.com/60419316/80701261-511c5800-8b09-11ea-8696-3a282db67343.png)
-#### Rename menjadi encv1_
+### Rename menjadi encv1_
 ![image](https://user-images.githubusercontent.com/60419316/80701307-65605500-8b09-11ea-893a-d45ec1c10023.png)
 Jika dilihat di storage yang utama (yang bukan di mount)
 ![image](https://user-images.githubusercontent.com/60419316/80701385-82952380-8b09-11ea-8ef0-c3ab584edfc6.png)
-#### Jika kita rename kembali dari encv1
+### Jika kita rename kembali dari encv1
 ![image](https://user-images.githubusercontent.com/60419316/80701450-9a6ca780-8b09-11ea-9716-4a95cea07029.png)
 Jika kita lihat di main storage (yang bukan di mount)
 ![image](https://user-images.githubusercontent.com/60419316/80701517-b2442b80-8b09-11ea-9a0f-5258f11cb807.png)
-#### Logging
+### Logging
 ![image](https://user-images.githubusercontent.com/60419316/80701557-c25c0b00-8b09-11ea-903b-7edb03b0f9d8.png)
-### ENCV2
-#### Rename 2: diberikan subdir
+## ENCV2
+### Rename 2: diberikan subdir
 ![image](https://user-images.githubusercontent.com/60419316/80701594-d56edb00-8b09-11ea-92e6-9a56ef994327.png)
 ![image](https://user-images.githubusercontent.com/60419316/80701606-dc95e900-8b09-11ea-870e-fc259999d211.png)
-#### Rename jadi encv2_
+### Rename jadi encv2_
 ![image](https://user-images.githubusercontent.com/60419316/80701638-e7507e00-8b09-11ea-83a1-a7833e79a950.png)
 ![image](https://user-images.githubusercontent.com/60419316/80701655-efa8b900-8b09-11ea-8354-831ba988f9c1.png)
-#### Rename kembali dari encv2_
+### Rename kembali dari encv2_
 ![image](https://user-images.githubusercontent.com/60419316/80701673-fa634e00-8b09-11ea-87a4-d24f102b8ce0.png)
 ![image](https://user-images.githubusercontent.com/60419316/80701697-0222f280-8b0a-11ea-8996-dcc149fc8120.png)
 Maka file kembali lagi tergabung
-#### Berlaku juga untuk subdir
+### Berlaku juga untuk subdir
 ![image](https://user-images.githubusercontent.com/60419316/80702136-c89eb700-8b0a-11ea-85c3-ce8fd8ddca58.png)
 ![image](https://user-images.githubusercontent.com/60419316/80702170-d3594c00-8b0a-11ea-81e1-8e9c998ec92b.png)
 ![image](https://user-images.githubusercontent.com/60419316/80702179-dbb18700-8b0a-11ea-9cb9-3c515152a903.png)
@@ -1215,23 +1215,23 @@ Maka file kembali lagi tergabung
 ![image](https://user-images.githubusercontent.com/60419316/80702218-e9670c80-8b0a-11ea-84ac-cfb64db53781.png)
 ![image](https://user-images.githubusercontent.com/60419316/80702237-f126b100-8b0a-11ea-9a7b-af5b222e97e6.png)
 ![image](https://user-images.githubusercontent.com/60419316/80702248-f71c9200-8b0a-11ea-8027-a29d101820ca.png)
-#### Encryption logging di database.log
+### Encryption logging di database.log
 ![image](https://user-images.githubusercontent.com/60419316/80702276-04398100-8b0b-11ea-8dc5-02a5ca99bd4d.png)
-### Sync DIR
-#### Creating dir
+## Sync DIR
+### Creating dir
 ![image](https://user-images.githubusercontent.com/60419316/80702325-161b2400-8b0b-11ea-8293-dbf91fd02a9b.png)
 Hasilnya
 ![image](https://user-images.githubusercontent.com/60419316/80702374-292df400-8b0b-11ea-8f18-9128cc507459.png)
 ![image](https://user-images.githubusercontent.com/60419316/80702409-35b24c80-8b0b-11ea-8648-4b37e11e9066.png)
-#### Coba create dir
+### Coba create dir
 ![image](https://user-images.githubusercontent.com/60419316/80702442-4662c280-8b0b-11ea-9106-21b591d8dd56.png)
 ![image](https://user-images.githubusercontent.com/60419316/80702464-4fec2a80-8b0b-11ea-84c9-2d0714553ec4.png)
-#### Coba create file
+### Coba create file
 ![image](https://user-images.githubusercontent.com/60419316/80702497-61cdcd80-8b0b-11ea-9f8e-8b303993a7ff.png)
 ![image](https://user-images.githubusercontent.com/60419316/80702526-6befcc00-8b0b-11ea-8fa7-150d75bafb84.png)
-#### Coba delete file sama dir
+### Coba delete file sama dir
 ![image](https://user-images.githubusercontent.com/60419316/80702572-7e6a0580-8b0b-11ea-85fa-572084a7fcd1.png)
 ![image](https://user-images.githubusercontent.com/60419316/80702593-8629aa00-8b0b-11ea-84b9-a7addd8956e1.png)
-### LOGGING
+## LOGGING
 Hasil logging dari membuat contoh diatas
 ![image](https://user-images.githubusercontent.com/60419316/80702632-993c7a00-8b0b-11ea-815f-19bd6c2648bf.png)
