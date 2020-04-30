@@ -1208,10 +1208,30 @@ Jika kita lihat di main storage (yang bukan di mount)
 ![image](https://user-images.githubusercontent.com/60419316/80701697-0222f280-8b0a-11ea-8996-dcc149fc8120.png)
 Maka file kembali lagi tergabung
 #### Berlaku juga untuk subdir
-
-####
-####
-####
-####
-####
-####
+![image](https://user-images.githubusercontent.com/60419316/80702136-c89eb700-8b0a-11ea-85c3-ce8fd8ddca58.png)
+![image](https://user-images.githubusercontent.com/60419316/80702170-d3594c00-8b0a-11ea-81e1-8e9c998ec92b.png)
+![image](https://user-images.githubusercontent.com/60419316/80702179-dbb18700-8b0a-11ea-9cb9-3c515152a903.png)
+![image](https://user-images.githubusercontent.com/60419316/80702197-e23ffe80-8b0a-11ea-9b36-155bf116d29d.png)
+![image](https://user-images.githubusercontent.com/60419316/80702218-e9670c80-8b0a-11ea-84ac-cfb64db53781.png)
+![image](https://user-images.githubusercontent.com/60419316/80702237-f126b100-8b0a-11ea-9a7b-af5b222e97e6.png)
+![image](https://user-images.githubusercontent.com/60419316/80702248-f71c9200-8b0a-11ea-8027-a29d101820ca.png)
+#### Encryption logging di database.log
+![image](https://user-images.githubusercontent.com/60419316/80702276-04398100-8b0b-11ea-8dc5-02a5ca99bd4d.png)
+### Sync DIR
+#### Creating dir
+![image](https://user-images.githubusercontent.com/60419316/80702325-161b2400-8b0b-11ea-8293-dbf91fd02a9b.png)
+Hasilnya
+![image](https://user-images.githubusercontent.com/60419316/80702374-292df400-8b0b-11ea-8f18-9128cc507459.png)
+![image](https://user-images.githubusercontent.com/60419316/80702409-35b24c80-8b0b-11ea-8648-4b37e11e9066.png)
+#### Coba create dir
+![image](https://user-images.githubusercontent.com/60419316/80702442-4662c280-8b0b-11ea-9106-21b591d8dd56.png)
+![image](https://user-images.githubusercontent.com/60419316/80702464-4fec2a80-8b0b-11ea-84c9-2d0714553ec4.png)
+#### Coba create file
+![image](https://user-images.githubusercontent.com/60419316/80702497-61cdcd80-8b0b-11ea-9f8e-8b303993a7ff.png)
+![image](https://user-images.githubusercontent.com/60419316/80702526-6befcc00-8b0b-11ea-8fa7-150d75bafb84.png)
+#### Coba delete file sama dir
+![image](https://user-images.githubusercontent.com/60419316/80702572-7e6a0580-8b0b-11ea-85fa-572084a7fcd1.png)
+![image](https://user-images.githubusercontent.com/60419316/80702593-8629aa00-8b0b-11ea-84b9-a7addd8956e1.png)
+### LOGGING
+Hasil logging dari membuat contoh diatas
+![image](https://user-images.githubusercontent.com/60419316/80702632-993c7a00-8b0b-11ea-815f-19bd6c2648bf.png)
